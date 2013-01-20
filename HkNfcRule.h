@@ -1,8 +1,8 @@
 #ifndef HK_NFCRULE_H
 #define HK_NFCRULE_H
 
-//#define HKNFCRW_USE_NFCA
-//#define HKNFCRW_USE_NFCB
+#define HKNFCRW_USE_NFCA
+#define HKNFCRW_USE_NFCB
 #define HKNFCRW_USE_NFCF
 //#define HKNFCRW_USE_NFCDEP
 //#define HKNFCRW_USE_LLCPI

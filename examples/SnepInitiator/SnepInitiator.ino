@@ -1,32 +1,26 @@
+/*
+ * SNEP PUT(initiator)で、http://www.google.co.jp/ のURIを飛ばします。
+ * 成功すると、ボード上のLEDが1秒間隔で点灯したままで止まります(無限ループ)。
+ * 失敗した場合は、それより短い周期で点滅します。
+ * まだライブラリの作りが甘いので、変だったらRESETボタンを押してください。
+ */
+
 #include <HkNfcRw.h>
 #include <HkNfcSnep.h>
 #include <HkNfcNdef.h>
-#include <inttypes.h>
-#include <string.h>
 
 
 #define PIN_LED		(13)
-#define PIN_PCD		(8)
 
 static HkNfcNdefMsg s_Msg;
 
-static void Abort()
+static void Abort(int wait)
 {
 	while(1) {
 		digitalWrite(PIN_LED, HIGH);
-		delay(1000);
+		delay(wait);
 		digitalWrite(PIN_LED, LOW);
-		delay(1000);
-	}
-}
-
-static void Abort2()
-{
-	while(1) {
-		digitalWrite(PIN_LED, HIGH);
-		delay(50);
-		digitalWrite(PIN_LED, LOW);
-		delay(50);
+		delay(wait);
 	}
 }
 
@@ -48,22 +42,17 @@ void setup()
 {
 	bool ret;
 
-	pinMode(PIN_PCD, OUTPUT);
-	digitalWrite(PIN_PCD, LOW);
 	pinMode(PIN_LED, OUTPUT);
 	digitalWrite(PIN_LED, LOW);
-	delay(200);
-	digitalWrite(PIN_PCD, HIGH);
-	delay(200);
 
 	ret = HkNfcRw::open();
 	if(!ret) {
-		Abort2();
+		Abort(50);
 	}
 
 	ret = HkNfcNdef::createUrl(&s_Msg, HkNfcNdef::HTTP_WWW, "google.co.jp/");
 	if(!ret) {
-		Abort2();
+		Abort(50);
 	}
 }
 
@@ -77,7 +66,7 @@ void loop()
 			;
 		}
 		if(HkNfcSnep::getResult() == HkNfcSnep::SUCCESS) {
-			Abort();
+			Abort(1000);
 		} else {
 			HkNfcRw::reset();
 			Wait(50);

@@ -1,3 +1,7 @@
+/*
+ * NFC-Fのカードをかざすと、ボード上のLEDが点灯します。
+ */
+
 #include <HkNfcRw.h>
 #include <inttypes.h>
 #include <string.h>
@@ -7,22 +11,25 @@
 
 void setup()
 {
-  bool ret;
+	bool ret;
 
-  digitalWrite(LED_PIN, LOW);
-  pinMode(LED_PIN, OUTPUT);
+	digitalWrite(LED_PIN, LOW);
+	pinMode(LED_PIN, OUTPUT);
 
-  ret = HkNfcRw::open();
-  while (!ret) {}
+	ret = HkNfcRw::open();
+	while (!ret) {}
 }
 
 void loop()
 {
 
-  HkNfcRw::Type type = HkNfcRw::detect(true, true, true);
-  if(type == HkNfcRw::NFC_F) {
-    digitalWrite(LED_PIN, HIGH);
-  } else {
-    digitalWrite(LED_PIN, LOW);
-  }
+	HkNfcRw::Type type = HkNfcRw::detect(true, true, true);
+	//NFC_Aにすると点滅しているので、よくわからんが失敗もしているみたい。
+	if(type == HkNfcRw::NFC_F) {
+		digitalWrite(LED_PIN, HIGH);
+	} else {
+		digitalWrite(LED_PIN, LOW);
+	}
+
+	delay(500);
 }

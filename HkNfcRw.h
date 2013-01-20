@@ -1,6 +1,7 @@
 #ifndef QHKNFCRW_H
 #define QHKNFCRW_H
 
+#include "HkNfcRule.h"
 #include <stdint.h>
 #include <cstring>
 
