@@ -9,8 +9,6 @@
 #define LOG_TAG "HkNfcF"
 #include "nfclog.h"
 
-#include <cstring>
-
 using namespace HkNfcRwMisc;
 
 namespace {

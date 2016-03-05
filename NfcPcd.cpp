@@ -4,7 +4,6 @@
  * 			RC-S620/S用(今のところ).
  */
 
-#include <cstdlib>
 #include "NfcPcd.h"
 #include "devaccess.h"
 #include "misc.h"

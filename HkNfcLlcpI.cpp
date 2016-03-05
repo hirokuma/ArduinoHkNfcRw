@@ -1,9 +1,6 @@
 #include "HkNfcRule.h"
 #ifdef HKNFCRW_USE_LLCPI
 
-#include <cstring>
-#include <cstdlib>
-
 #include "HkNfcLlcpI.h"
 #include "NfcPcd.h"
 #include "misc.h"

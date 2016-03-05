@@ -3,7 +3,6 @@
 
 #include "HkNfcRule.h"
 #include <stdint.h>
-#include <cstring>
 
 
 /**

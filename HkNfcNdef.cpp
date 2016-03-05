@@ -1,4 +1,3 @@
-#include <cstring>
 #include "HkNfcNdef.h"
 #include "misc.h"
 
