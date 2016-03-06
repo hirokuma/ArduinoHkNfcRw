@@ -89,7 +89,7 @@ bool HkNfcA::polling()
 }
 
 
-bool HkNfcA::read(uint8_t* buf, uint8_t blockNo)
+bool HkNfcA::read(uint8_t* buf, uint8_t blockNo, bool bClassic/*=false*/)
 {
 	NfcPcd::commandBuf(0) = 0x01;
 	NfcPcd::commandBuf(2) = blockNo;
@@ -104,34 +104,39 @@ bool HkNfcA::read(uint8_t* buf, uint8_t blockNo)
 	uint8_t len;
 	bool ret;
 
-#if 1
-	// Key A Authentication
-	NfcPcd::commandBuf(1) = KEY_A_AUTH;
-	ret = NfcPcd::inDataExchange(
-					NfcPcd::commandBuf(), 9 + NfcPcd::nfcIdLen(),
-					NfcPcd::responseBuf(), &len);
-	if(!ret) {
-		LOGE("read fail1\n");
-		return false;
-	}
-#endif
+    if (bClassic) {
+    	// Key A Authentication
+    	NfcPcd::commandBuf(1) = KEY_A_AUTH;
+    	ret = NfcPcd::inDataExchange(
+    					NfcPcd::commandBuf(), 9 + NfcPcd::nfcIdLen(),
+    					NfcPcd::responseBuf(), &len);
+    	if(!ret) {
+    		LOGE("read fail1\n");
+    		return false;
+    	}
+    }
 
-#if 0
-	// Key B Authentication
-	NfcPcd::commandBuf(1) = KEY_B_AUTH;
-	ret = NfcPcd::inDataExchange(
-					NfcPcd::commandBuf(), 9 + NfcPcd::nfcIdLen(),
-					NfcPcd::responseBuf(), &len);
-	if(!ret) {
-		LOGE("read fail2\n");
-		return false;
-	}
-#endif
+    if (bClassic) {
+    	// Key B Authentication
+    	NfcPcd::commandBuf(1) = KEY_B_AUTH;
+    	ret = NfcPcd::inDataExchange(
+    					NfcPcd::commandBuf(), 9 + NfcPcd::nfcIdLen(),
+    					NfcPcd::responseBuf(), &len);
+    	if(!ret) {
+    		LOGE("read fail2\n");
+    		return false;
+    	}
+    }
 
 	// Read
-	NfcPcd::commandBuf(1) = READ;
+    if (bClassic) {
+    	NfcPcd::commandBuf(1) = READ;
+    } else {
+    	NfcPcd::commandBuf(0) = READ;
+    	NfcPcd::commandBuf(1) = blockNo;
+    }
 	ret = NfcPcd::inDataExchange(
-					NfcPcd::commandBuf(), 3,
+					NfcPcd::commandBuf(), (bClassic) ? 3 : 2,
 					NfcPcd::responseBuf(), &len);
 	if(ret) {
 		memcpy(buf, NfcPcd::responseBuf(), len);

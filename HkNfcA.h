@@ -53,7 +53,7 @@ private:
 
 public:
 	static bool polling();
-	static bool read(uint8_t* buf, uint8_t blockNo);
+	static bool read(uint8_t* buf, uint8_t blockNo, bool bClassic=false);
 	static bool write(const uint8_t* buf, uint8_t blockNo);
 
 	/// SEL_RES取得
